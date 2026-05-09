@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Game Logila</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #1f1f3a, #050510);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+  }
+
+  .card {
+    width: 90%;
+    max-width: 420px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 0 40px rgba(0,200,255,0.3);
+    animation: fadeIn 0.6s ease;
+  }
+
+  h1 {
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .question {
+    font-size: 18px;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .answers button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 30px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    transition: 0.3s;
+  }
+
+  .answers button:hover {
+    transform: scale(1.05);
+  }
+
+  .result {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    min-height: 24px;
+  }
+
+  .score {
+    margin-top: 10px;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+  }
+</style>
+</head>
+
+<body>
+<div class="card">
+  <h1>game Logila</h1>
+  <div class="question" id="question"></div>
+  <div class="answers" id="answers"></div>
+  <div class="result" id="result"></div>
+  <div class="score" id="score"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Kalau alarm bunyi jam 5, tapi kamu bangun jam 7. Yang salah apa?",
+    a: ["Alarmnya", "Kamu", "Jamnya", "Takdir"],
+    correct: 1
+  },
+  {
+    q: "HP 100%, dipakai bentar jadi 20%. Yang boros apa?",
+    a: ["Baterai", "Aplikasi", "Kamu", "Semua benar"],
+    correct: 3
+  },
+  {
+    q: "Chat dibaca tapi gak dibalas. Artinya?",
+    a: ["Lagi sibuk", "Lupa", "Gak minat", "Semua kemungkinan"],
+    correct: 3
+  },
+  {
+    q: "Scroll TikTok niat 5 menit, tau-tau 1 jam. Yang rusak?",
+    a: ["Waktu", "Algoritma", "Kamu", "Realita"],
+    correct: 2
+  },
+  {
+    q: "Niatan diet, tapi diskon makanan muncul. Siapa menang?",
+    a: ["Dompet", "Logika", "Diskon", "Keinginan"],
+    correct: 3
+  }
+];
+
+let index = 0;
+let score = 0;
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const resultEl = document.getElementById("result");
+const scoreEl = document.getElementById("score");
+
+function loadQuestion() {
+  resultEl.textContent = "";
+  const q = questions[index];
+  questionEl.textContent = q.q;
+  answersEl.innerHTML = "";
+
+  q.a.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = text;
+    btn.onclick = () => checkAnswer(i);
+    answersEl.appendChild(btn);
+  });
+
+  scoreEl.textContent = `Score: ${score} / ${questions.length}`;
+}
+
+function checkAnswer(choice) {
+  if (choice === questions[index].correct) {
+    resultEl.textContent = "✅ Betul bestie!";
+    resultEl.style.color = "#00ffcc";
+    score++;
+  } else {
+    resultEl.textContent = "❌ Salah, mikir lagi 😭";
+    resultEl.style.color = "#ff5c5c";
+  }
+
+  setTimeout(() => {
+    index++;
+    if (index < questions.length) {
+      loadQuestion();
+    } else {
+      finishGame();
+    }
+  }, 900);
+}
+
+function finishGame() {
+  questionEl.textContent = "Game selesai 🎉";
+  answersEl.innerHTML = "";
+  resultEl.textContent = `Skor akhir kamu: ${score} / ${questions.length}`;
+  scoreEl.textContent = score >= 4
+    ? "🧠 selamat iq kamu 9999999!"
+    : "btw pinjam limpul boleh?";
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
